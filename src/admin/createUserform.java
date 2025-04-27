@@ -502,26 +502,17 @@ public class createUserform extends javax.swing.JFrame {
         if(db.InsertData("INSERT INTO tbl_user (u_username, u_fname, u_lname, u_phone, u_address, u_pass, u_type, u_image, u_status)"  
             + "VALUES ('"+user.getText()+"', '"+fna.getText()+"', '"+lna.getText()+"', '"+ct.getText()+"', '"+address.getText()+"', '"+password+"', '"+type.getSelectedItem()+"', '"+destination+"', 'Pending')") == 1){
             try{
-                if(destination.isEmpty()){
-                    int confirm = JOptionPane.showConfirmDialog(this, "Add User picture?", "Confirmation", JOptionPane.YES_NO_OPTION);
-
-                    if (confirm == JOptionPane.YES_OPTION) {
-                        Files.copy(selectedFile.toPath(), new File(destination).toPath(), StandardCopyOption.REPLACE_EXISTING);
-                        Session sess = Session.getInstance();
-                        db.logActivity(sess.getUid(), "Create a user: " + user.getText());
-                        JOptionPane.showMessageDialog(this, "Account Created Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                        usersTable ut = new usersTable();
-                        ut.setVisible(true);
-                        this.dispose();
-                    }else if(confirm == JOptionPane.NO_OPTION){
-                        Session sess = Session.getInstance();
-                        db.logActivity(sess.getUid(), "Create a user: " + user.getText());
-                        JOptionPane.showMessageDialog(this, "Account Created Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                        usersTable ut = new usersTable();
-                        ut.setVisible(true);
-                        this.dispose();              
-                    }
+                if(selectedFile != null && !destination.isEmpty()) {
+                   Files.copy(selectedFile.toPath(), new File(destination).toPath(), StandardCopyOption.REPLACE_EXISTING);
                 }
+
+                    Session sess = Session.getInstance();
+                    db.logActivity(sess.getUid(), "Created a user: " + username1);
+                    JOptionPane.showMessageDialog(this, "Account Created Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                    usersTable ut = new usersTable();
+                    ut.setVisible(true);
+                    this.dispose();
             }catch(IOException ex){
                 System.out.println("Insert Image Error:"+ex);
                 }
